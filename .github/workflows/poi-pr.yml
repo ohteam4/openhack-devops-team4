@@ -1,13 +1,19 @@
 name: New POI PR
-
 on:
+  push:
+    branches: 
+    - features/**
+    paths:
+      - 'apis/poi/**'
+      - '.github/workflows/poi-pr.yml'
   pull_request:
     branches: 
     - main
+    types: [edited, synchronize, opened, reopened]
     paths:
     - 'apis/poi/**'
     - '.github/workflows/poi-pr.yml'
-    types: [edited, synchronize, opened, reopened]
+
         
 jobs:
   build:

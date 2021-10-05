@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'apis/poi/**'
+      - '.github/workflows/poi-pr.yml'
 
 jobs:
   build:

@@ -1,4 +1,4 @@
-name: New POI PR
+name: POI PR
 
 on:
   pull_request:
@@ -8,7 +8,10 @@ on:
     - 'apis/poi/**'
     - '.github/workflows/poi-pr.yml'
     types: [edited, synchronize, opened, reopened]
-        
+
+env:
+  APPLICATIONPATH: apis/poi/
+  
 jobs:
   build:
 
@@ -20,10 +23,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
+    - name: Switch directory
+      run: pushd ${{ env.APPLICATIONPATH }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
     - name: Test
-      run: dotnet test --no-build --verbosity normal
-      
+      run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
+    - name: Switch directory
+      run: popd

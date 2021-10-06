@@ -30,10 +30,10 @@ jobs:
     - name: Test
       run: dotnet test apis/poi/tests/UnitTests/UnitTests.csproj --verbosity normal
     - name: Create issue
-      if: ${​​​​​​​{​​​​​​​ failure() }​​​​​​​}​​​​​​​
+      if: failure()​​​​
       uses: nashmaniac/create-issue-action@v1.1
       with:
-        title: Build ${{env.GITHUB_RUN_NUMBER}} Failed
+        title: Build ${{github.run_number}} Failed
         token: ${{secrets.GITHUB_TOKEN}}
         assignees: ${{github.actor}}
         labels: worflow-failed

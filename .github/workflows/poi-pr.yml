@@ -29,9 +29,8 @@ jobs:
       run: dotnet build apis/poi/poi.sln --no-restore --configuration Release
     - name: Test
       run: dotnet test apis/poi/tests/UnitTests/UnitTests.csproj --verbosity normal
-    - name: Create issue
+    - uses: nashmaniac/create-issue-action@v1.1
       if: failure()​​​​
-      uses: nashmaniac/create-issue-action@v1.1
       with:
         title: Build ${{github.run_number}} Failed
         token: ${{secrets.GITHUB_TOKEN}}

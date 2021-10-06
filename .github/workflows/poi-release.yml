@@ -11,6 +11,7 @@ on:
 
 env:
   APPLICATIONPATH: apis/poi/
+  APPLICATIONNAME: openhackqug903g3poi
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/poi
   
@@ -38,3 +39,29 @@ jobs:
           context: ${{ env.APPLICATIONPATH }}/web
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    #- uses: azure/docker-login@v1
+      #with:
+      #  login-server: mycontainer.azurecr.io
+      #  username: ${{ secrets.REGISTRY_USERNAME }}
+      #  password: ${{ secrets.REGISTRY_PASSWORD }}
+    #- run: |
+    #    docker build . -t mycontainer.azurecr.io/myapp:${{ github.sha }}
+    #    docker push mycontainer.azurecr.io/myapp:${{ github.sha }}     
+      
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.APPLICATIONNAME }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
+    
+    - name: Azure logout
+      run: |
+        az logout

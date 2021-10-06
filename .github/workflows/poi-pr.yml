@@ -23,13 +23,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    - name: Switch directory
-      run: pushd ${{ env.APPLICATIONPATH }}
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore apis/poi/poi.sln
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build apis/poi/poi.sln --no-restore --configuration Release
     - name: Test
-      run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
-    - name: Switch directory
-      run: popd
+      run: dotnet test apis/poi/tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
+

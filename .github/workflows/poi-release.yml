@@ -37,4 +37,4 @@ jobs:
         with:
           context: ${{ env.APPLICATIONPATH }}/web
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.GITHUB_RUN_NUMBER }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}

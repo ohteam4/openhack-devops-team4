@@ -29,4 +29,14 @@ jobs:
       run: dotnet build apis/poi/poi.sln --no-restore --configuration Release
     - name: Test
       run: dotnet test apis/poi/tests/UnitTests/UnitTests.csproj --verbosity normal
+    - name: Create issue
+      if: ${​​​​​​​{​​​​​​​ failure() }​​​​​​​}​​​​​​​
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Build ${{env.GITHUB_RUN_NUMBER}} Failed
+        token: ${{secrets.GITHUB_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: worflow-failed
+        body: Workflow failed for commit ${{github.sha}}
+
 

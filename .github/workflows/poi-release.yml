@@ -48,19 +48,11 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    #- uses: azure/docker-login@v1
-      #with:
-      #  login-server: mycontainer.azurecr.io
-      #  username: ${{ secrets.REGISTRY_USERNAME }}
-      #  password: ${{ secrets.REGISTRY_PASSWORD }}
-    #- run: |
-    #    docker build . -t mycontainer.azurecr.io/myapp:${{ github.sha }}
-    #    docker push mycontainer.azurecr.io/myapp:${{ github.sha }}     
-      
+         
     - uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.APPLICATIONNAME }}
+        slot-name: staging
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
     
     - name: Azure logout

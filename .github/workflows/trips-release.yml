@@ -1,4 +1,4 @@
-name: POI RELEASE
+name: TRIPS RELEASE
 
 on:
   workflow_dispatch:

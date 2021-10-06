@@ -35,7 +35,7 @@ namespace poi.Controllers
                 return NotFound();
             }
             return Ok(item);
-            
+            //test
         }
 
         [HttpGet("trip/{tripID}", Name = "GetPOIsByTripId")]

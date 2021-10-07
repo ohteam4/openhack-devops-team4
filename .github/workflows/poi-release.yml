@@ -70,9 +70,7 @@ jobs:
         # Retry all errors, including 404. This option might trigger curl upgrade.
         # retry-all: no # Optional, defaults to "no"
     - name: Swap slots
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
+      run: |
           az webapp deployment slot swap \
             -g ${{ env.RESOURCE_GROUP }} \
             -n ${{ env.APPLICATIONNAME }} \

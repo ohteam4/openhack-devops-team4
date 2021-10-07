@@ -15,7 +15,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/poi
   RESOURCE_GROUP: openhackqug903g3rg
-  STAGING_URL: https://openhackqug903g3poi-staging.azurewebsites.net/api/healthcheck/poi
+  STAGING_URL: https://openhackqug903g3poi-staging.azurewebsites.net/api/healthcheck/poi-WRONG
   PROD_URL: https://openhackqug903g3poi.azurewebsites.net/api/healthcheck/poi-WRONG
   
 jobs:
@@ -116,11 +116,12 @@ jobs:
         # retry-all: no # Optional, defaults to "no"
   rollback:
     needs: validate-production
+      
     runs-on: ubuntu-latest
-    if: failure()
+    if: needs.validate-production.result == 'failure'
     environment: production-rollback
     steps:
-    - name: 'Login via Azure CLI'
+    - name: 'Login via Azure CLI' 
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}

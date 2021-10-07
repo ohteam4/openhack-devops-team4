@@ -51,6 +51,12 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: 'Start staging slot'    
+      run: |
+        az webapp start \
+        -g ${{ env.RESOURCE_GROUP }} \
+        -n ${{ env.APPLICATIONNAME }} \
+        --slot staging
     - uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.APPLICATIONNAME }}
@@ -114,6 +120,22 @@ jobs:
         retry-delay: 5s # Optional, only applicable to max-attempts > 1
         # Retry all errors, including 404. This option might trigger curl upgrade.
         # retry-all: no # Optional, defaults to "no"
+
+  optimize-production:
+    needs: validate-production
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: 'Stop staging slot'    
+      run: |
+        az webapp stop \
+        -g ${{ env.RESOURCE_GROUP }} \
+        -n ${{ env.APPLICATIONNAME }} \
+        --slot staging
+        
   rollback:
     needs: validate-production
       

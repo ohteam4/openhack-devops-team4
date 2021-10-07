@@ -1,4 +1,4 @@
-name: POI RELEASE
+name: POI RELEASE CODEQL
 
 on:
   workflow_dispatch:

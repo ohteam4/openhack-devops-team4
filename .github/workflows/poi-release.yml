@@ -73,7 +73,7 @@ jobs:
         # Follow redirects, or just report success on 3xx status codes
         # follow-redirect: false # Optional, defaults to "no"
         # Fail this action after this many failed attempts
-        max-attempts: 3 # Optional, defaults to 1
+        max-attempts: 10 # Optional, defaults to 1
         # Delay between retries
         retry-delay: 5s # Optional, only applicable to max-attempts > 1
         # Retry all errors, including 404. This option might trigger curl upgrade.
@@ -109,7 +109,7 @@ jobs:
         # Follow redirects, or just report success on 3xx status codes
         # follow-redirect: false # Optional, defaults to "no"
         # Fail this action after this many failed attempts
-        max-attempts: 3 # Optional, defaults to 1
+        max-attempts: 10 # Optional, defaults to 1
         # Delay between retries
         retry-delay: 5s # Optional, only applicable to max-attempts > 1
         # Retry all errors, including 404. This option might trigger curl upgrade.
@@ -118,13 +118,15 @@ jobs:
     needs: validate-production
       
     runs-on: ubuntu-latest
-    if: needs.validate-production.result == 'failure'
+    if: failure('validate-production')
     environment: production-rollback
     steps:
     - name: 'Login via Azure CLI' 
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: 'temp action'
+      run: echo ${{ needs.validate-production.result }}
     - name: Rollback
       run: |
           az webapp deployment slot swap \

@@ -15,6 +15,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/poi
   RESOURCE_GROUP: openhackqug903g3rg
+  STAGING_URL: https://openhackqug903g3poi-staging.azurewebsites.net/api/healthcheck/poi
+  PROD_URL: https://openhackqug903g3poi.azurewebsites.net/api/healthcheck/poi
   
 jobs:
   build-and-push-image:
@@ -60,7 +62,7 @@ jobs:
       uses: jtalk/url-health-check-action@v2
       with:
         # Check the following URLs one by one sequentially
-        url: https://openhackqug903g3poi-staging.azurewebsites.net/api/healthcheck/poi
+        url: ${{ env.STAGING_URL }}
         # Follow redirects, or just report success on 3xx status codes
         # follow-redirect: false # Optional, defaults to "no"
         # Fail this action after this many failed attempts
@@ -77,6 +79,28 @@ jobs:
             --slot staging \
             --target-slot production      
 
+    - name: Check the deployed service PROD URL
+      uses: jtalk/url-health-check-action@v2
+      with:
+        # Check the following URLs one by one sequentially
+        url: ${{ env.PROD_URL }}
+        # Follow redirects, or just report success on 3xx status codes
+        # follow-redirect: false # Optional, defaults to "no"
+        # Fail this action after this many failed attempts
+        max-attempts: 3 # Optional, defaults to 1
+        # Delay between retries
+        retry-delay: 5s # Optional, only applicable to max-attempts > 1
+        # Retry all errors, including 404. This option might trigger curl upgrade.
+        # retry-all: no # Optional, defaults to "no"
+
+    - name: Rollback
+      if: failure()
+      run: |
+          az webapp deployment slot swap \
+            -g ${{ env.RESOURCE_GROUP }} \
+            -n ${{ env.APPLICATIONNAME }} \
+            --slot production \
+            --target-slot staging    
       
     - name: Azure logout
       run: |

@@ -118,6 +118,7 @@ jobs:
     needs: validate-production
     runs-on: ubuntu-latest
     if: failure()
+    environment: production-rollback
     steps:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1

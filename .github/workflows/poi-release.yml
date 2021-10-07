@@ -15,7 +15,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/poi
   RESOURCE_GROUP: openhackqug903g3rg
-  STAGING_URL: https://openhackqug903g3poi-staging.azurewebsites.net/api/healthcheck/poi-WRONG
+  STAGING_URL: https://openhackqug903g3poi-staging.azurewebsites.net/api/healthcheck/poi
   PROD_URL: https://openhackqug903g3poi.azurewebsites.net/api/healthcheck/poi-WRONG
   
 jobs:
